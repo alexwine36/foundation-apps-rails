@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   scope :api, defaults: {format: :json} do
     resources :posts, except: [:edit, :new]
+    resources :calendars, except: [:edit, :new]
   end
 
   get '*path' => 'base#index'

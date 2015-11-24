@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby "2.2.2"
+ruby "2.2.1"
 
 gem 'rails', '4.2.0'
 gem 'sass', '~> 3.4.0'
@@ -10,6 +10,8 @@ gem 'jquery-rails'
 gem 'jbuilder', '~> 2.0'
 gem 'responders'
 gem 'sdoc', '~> 0.4.0',          group: :doc
+
+gem 'mongoid', '~> 5.0.0'
 
 group :development do
   gem 'spring'

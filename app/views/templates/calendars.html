@@ -1,0 +1,88 @@
+---
+name: calendars
+url: /calendars
+controller: CalendarsController
+---
+
+<a ui-sref="calendars" ng-hide="params.id == undefined">&laquo; Back</a>
+<div class="grid-block" ng-show="params.id == undefined">
+  <div class="grid-content small-up-6">
+    <h1>Calendars <small><a class="subheader" href="#" ng-click="new()">New</a></small></h1>
+  </div>
+  <div class="grid-content small-up-6">
+    <br>
+    <input type=text ng-model="searchText" placeholder="...Search"/>
+  </div>
+</div>
+<h1 ng-hide="params.id == undefined">{{calendar.title}} <small><a href="#" class="subheader" ng-click="edit(calendar.id)">Edit</a></small></h1>
+<strong ng-hide="params.id == undefined">Published: {{ calendar.created_at | date: 'MM.dd.yyyy h:mma Z' }}<span ng-hide="calendar.updated_at == calendar.created_at"> | Updated: {{ calendar.updated_at | date: 'MM.dd.yyyy h:mma Z' }}</span></strong>
+<hr>
+<p ng-hide="params.id == undefined" ng-bind-html="deliberatelyTrustDangerousSnippet(calendar.content)"></p>
+
+<div class="grid-block small-up-2 medium-up-4" ng-show="params.id==undefined">
+  <div class="grid-content" ng-repeat="calendar in filteredCalendars | filter:searchText">
+    <div class="card">
+      <div class="card-divider">
+        <a href="#" ng-click="edit(calendar.id)">Edit</a><span ng-show="params.id == undefined"> | <a ui-sref="calendars.show({id: calendar.id})">Show</a></span> | <a href="#" ng-click="destroy(calendar)">Delete</a>
+      </div>
+      <div class="card-section">
+        <h4>{{ calendar.title }}</h4>
+        <strong>{{ calendar.created_at | date: 'MM.dd.yyyy' }}</strong>
+        <hr>
+        <p>{{ calendar.content | limitTo:55 }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<zf-modal size="small" id="edit-calendars" overlay="true" overlay-close="true">
+  <div class="grid-block vertical">
+    <div class="primary title-bar">
+      <div class="center title">Edit Calendar</div>
+      <span zf-close class="left"><a href="#">Close</a></span>
+    </div>
+    <div class="grid-content padding" style="padding-top: 1rem; padding-bottom: 1rem;">
+      <form novalidate>
+        <label>Title</label>
+        <input type="text" name="title" ng-model="calendar.title" required/>
+        <label>Content</label>
+        <textarea name="content" ng-model="calendar.content"></textarea>
+        <button class="button radius" type="submit" ng-click="update()">Post</button>
+      </form>
+    </div>
+  </div>
+</zf-modal>
+
+
+<zf-modal size="small" id="new-calendars" overlay="true" overlay-close="true">
+  <div class="grid-block vertical">
+    <div class="primary title-bar">
+      <div class="center title">New Calendar</div>
+      <span zf-close class="left"><a href="#">Close</a></span>
+    </div>
+    <div class="grid-content padding" style="padding-top: 1rem; padding-bottom: 1rem;">
+      <form novalidate>
+        <label>Title</label>
+        <input type="text" name="title" ng-model="calendar.title" required/>
+        <label>Content</label>
+        <textarea name="content" ng-model="calendar.content"></textarea>
+        <button class="button radius" type="submit" ng-click="create()">Post</button>
+      </form>
+    </div>
+  </div>
+</zf-modal>
+
+
+<zf-modal size="small" id="delete-calendars" overlay="true">
+  <div class="grid-block vertical">
+    <div class="primary title-bar">
+      <div class="center title">Delete Calendar</div>
+      <span zf-close class="left"><a href="#">Close</a></span>
+    </div>
+    <div class="grid-content padding" style="padding-top: 1rem; padding-bottom: 1rem;">
+      <p>Are you sure?</p>
+      <a zf-close class="button" ng-click="destroyConfirm(calendar)">Yes</a>
+      <a zf-close class="button" href="#">No</a>
+    </div>
+  </div>
+</zf-modal>

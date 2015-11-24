@@ -1,4 +1,8 @@
-class Post < ActiveRecord::Base
-  validates_presence_of :title
-  validates_length_of :title, :minimum => 3
+class Post
+  include Mongoid::Document
+  include Mongoid::Timestamps
+  field :title, type: String
+  field :content, type: String
+  field :_id, type: String, default: -> { title.parameterize }
+  
 end
